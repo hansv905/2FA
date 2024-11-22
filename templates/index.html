@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2FA 설정</title>
+</head>
+<body>
+    <h1>2FA 설정</h1>
+    
+    {% if qr_code %}
+    <div>
+        <p>Google Authenticator로 아래 QR 코드를 스캔하세요:</p>
+        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+    </div>
+    {% endif %}
+    
+    <div>
+        <p>비밀 키: {{ secret }}</p>
+    </div>
+    
+    <form action="{{ url_for('verify_2fa') }}" method="POST">
+        <input type="text" name="code" placeholder="인증 코드 입력">
+        <button type="submit">확인</button>
+    </form>
+</body>
+</html>
