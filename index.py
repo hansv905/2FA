@@ -32,14 +32,15 @@ user_secrets = {}
 def setup_2fa():
     # secret = pyotp.random_base32()
     secret = "7FTW7AJPDK7BM4YB46OIY7B4TYM3YYKL"
-    secret = "ABCDEFGH22345678ABCDEFGH22345678" #Base32 인코딩 규칙 준수 필요 A-Z, 2-7
+    # secret = "ABCDEFGH22345678ABCDEFGH22345678" #Base32 인코딩 규칙 준수 필요 A-Z, 2-7
+    user_email = "sm@inocras.com"
     user_secrets['user_id'] = secret
 
     
     totp = pyotp.TOTP(secret)
     provisioning_uri = totp.provisioning_uri(
-        "user@example.com",
-        issuer_name="YourApp"
+        user_email,
+        issuer_name="GIP"
     )
     
     # QR 코드 생성 및 이미지 변환
@@ -56,6 +57,7 @@ def setup_2fa():
     
     return render_template('index.html', 
                          secret=secret,
+                         user_email=user_email,
                          qr_code=img_str)
 
 @app.route('/verify_2fa', methods=['POST'])
